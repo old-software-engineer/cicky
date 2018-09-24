@@ -6,5 +6,11 @@ export const IosStyles = StyleSheet.create({
         backgroundColor: 'black',
         flexDirection: 'column',
         padding: 20,
-    }
+    },
+    h2: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'Kohinoor Telugu',
+        fontFamily: 'Roboto',
+    },
 })

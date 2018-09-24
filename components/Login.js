@@ -7,11 +7,17 @@ import Logo from '../static/images/retro_logo.png';
 import { base } from "../static/styles/base";
 import { IosStyles } from '../static/styles/Ios';
 import { AndroidStyles } from '../static/styles/Android';
+import { connect } from 'react-redux';
+import { showDialog, setName, setSocket, hideDialog } from '../actions/Actions';
+import Alert from './Dialogs/Alert';
+import '../static/styles/base';
+import '../static/styles/Android';
+import '../static/styles/Ios';
 
 const socketUrl = 'ws://clicky96server.herokuapp.com'
 const socketEndPoint = 'https://socket-io-expo-backend-dtyxsdtzxb.now.sh'
 
-export default class Login extends React.PureComponent {
+class Login extends React.PureComponent {
 
     constructor(props) {
         super(props)
@@ -23,10 +29,9 @@ export default class Login extends React.PureComponent {
             data: null,
             isConnected: false,
             players: null,
+            show: false,
         }
         this.setName = this.setName.bind(this)
-        this.showDialog = this.showDialog.bind(this)
-        this.hideDialog = this.hideDialog.bind(this)
 
     }
 
@@ -42,21 +47,9 @@ export default class Login extends React.PureComponent {
             )
         }
         else {
-            this.showDialog('Can not leave the name blank', 'red')
+            this.props.showDialog("can't leave the name empty (-_-)", 'red')
+            this.props.hideDialog
         }
-    }
-
-    //Alert dialog
-    showDialog = function (message, color) {
-        this.setState({ msg: message })
-        this.setState({ color: color })
-        setTimeout(this.hideDialog, 3000)
-    }
-
-    //Disposing alert
-    hideDialog = function () {
-        this.setState({ msg: null })
-        this.setState({ color: null })
     }
 
     componentWillUnmount() {
@@ -105,15 +98,7 @@ export default class Login extends React.PureComponent {
                         ping response: {this.state.data}
                     </Text> */}
                 </KeyboardAvoidingView>
-                {(() => {
-                    switch (this.state.color) {
-                        case "red": return <View style={[styles.shadows, { padding: 20, margin: 20, justifyContent: 'center', borderRadius: 4, backgroundColor: '#f8577e' }]}><Text>{this.state.msg}</Text></View>;
-
-                        case "green": return <View style={[styles.shadows, { padding: 20, margin: 20, justifyContent: 'center', borderRadius: 4, backgroundColor: '#56F9BB' }]}><Text>{this.state.msg}</Text></View>;
-
-                        default: return <View />;
-                    }
-                })()}
+                <Alert/>
             </View>
 
         )
@@ -134,15 +119,7 @@ export default class Login extends React.PureComponent {
                         </Text> */}
                     </View>
                 </KeyboardAvoidingView>
-                {(() => {
-                    switch (this.state.color) {
-                        case "red": return <View style={[styles.shadows, { padding: 20, margin: 20, justifyContent: 'center', borderRadius: 4, backgroundColor: '#f8577e' }]}><Text>{this.state.msg}</Text></View>;
-
-                        case "green": return <View style={[styles.shadows, { padding: 20, margin: 20, justifyContent: 'center', borderRadius: 4, backgroundColor: '#56F9BB' }]}><Text>{this.state.msg}</Text></View>;
-
-                        default: return <View />;
-                    }
-                })()}
+                <Alert />
             </ScrollView>
         )
     }
@@ -159,21 +136,6 @@ export default class Login extends React.PureComponent {
 
     }
 }
-
-const styles = StyleSheet.create({
-    h2: {
-        color: 'white',
-        fontSize: 20,
-        ...Platform.select({
-            ios: {
-                fontFamily: 'Kohinoor Telugu',
-            },
-            android: {
-                fontFamily: 'Roboto',
-            }
-        })
-    },
-});
 
 const mapStateToProps = (state) => {
     return {
@@ -198,3 +160,5 @@ const mapDispatchToProps = (dispatch) => {
 
     }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

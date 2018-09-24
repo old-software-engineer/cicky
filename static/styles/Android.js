@@ -11,5 +11,10 @@ export const AndroidStyles = StyleSheet.create({
     },
     shadow: {
         elevation: 2
-    }
+    },
+    h2: {
+        color: 'white',
+        fontSize: 20,
+        fontFamily: 'Roboto',
+    },
 })

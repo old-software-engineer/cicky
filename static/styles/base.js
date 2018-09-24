@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Platform } from "react-native";
 
 export const App = StyleSheet.create({
     body: {
@@ -16,19 +16,29 @@ export const Page = StyleSheet.create({
     }
 })
 
-export const Dialog = StyleSheet.create({
-    green: {
-        padding: 20,
-        margin: 20,
-        justifyContent: 'center',
-        borderRadius: 4,
-        backgroundColor: '#56F9BB'
+export const GameOverStyle = StyleSheet.create({
+    h2: {
+        fontSize: 20,
+        color: 'black',
+        ...Platform.select({
+            ios: {
+                fontFamily: 'Kohinoor Telugu',
+            },
+            android: {
+                fontFamily: 'Roboto',
+            }
+        })
     },
-    red: {
-        padding: 20,
-        margin: 20,
-        justifyContent: 'center',
-        borderRadius: 4,
-        backgroundColor: '#f8577e'
-    },
+    h3: {
+        fontSize: 14,
+        color: 'black',
+        ...Platform.select({
+            ios: {
+                fontFamily: 'Kohinoor Telugu',
+            },
+            android: {
+                fontFamily: 'Roboto',
+            }
+        })
+    }
 })

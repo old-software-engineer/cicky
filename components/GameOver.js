@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, BackHandler, Platform, BackAndroid } from "react-native";
 // import { Audio } from 'expo';
 import { Button, Icon, Text } from "react-native-elements";
+import { GameOverStyle } from '../static/styles/base';
 
 export default class GameOver extends React.Component {
     constructor(props) {
@@ -37,8 +38,8 @@ export default class GameOver extends React.Component {
                 alignItems: 'center',
                 backgroundColor: 'white',
             }}>
-                <Text style={style.h2}>Winner:</Text>
-                <Text style={[style.h2, { fontWeight: 'bold' }]}>{this.props.navigation.state.params.winnerName}</Text>
+                <Text style={GameOverStyle.h2}>Winner:</Text>
+                <Text style={[GameOverStyle.h2, { fontWeight: 'bold' }]}>{this.props.navigation.state.params.winnerName}</Text>
                 <View style={{
                     flexDirection: 'row',
                     justifyContent: 'center',
@@ -48,11 +49,11 @@ export default class GameOver extends React.Component {
                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Icon
                             raised
-                            name='reload'
-                            type='material-community-icons'
+                            name='replay'
+                            type='simple-community-icons'
                             color='#f50'
                             onPress={() => this.props.navigation.navigate('Login')} />
-                        <Text style={[style.h3, style = { fontWeight: 'bold' }]}>Play again</Text>
+                        <Text style={[GameOverStyle.h3, style = { fontWeight: 'bold' }]}>Play again</Text>
                     </View>
                     <View style={{ flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
                         <Icon
@@ -60,42 +61,15 @@ export default class GameOver extends React.Component {
                             name='exit-to-app'
                             type='material-community-icons'
                             color='#f50'
-                            onPress={() => { 
+                            onPress={() => {
                                 Platform.select({
-                                    android:  BackAndroid.exitApp(),
+                                    android: BackAndroid.exitApp(),
                                 })
-                                }} />
-                        <Text style={[style.h3, style = { fontWeight: 'bold' }]}>Exit</Text>
+                            }} />
+                        <Text style={[GameOverStyle.h3, style = { fontWeight: 'bold' }]}>Exit</Text>
                     </View>
                 </View>
             </View>
         );
     }
 }
-
-const style = StyleSheet.create({
-    h2: {
-        fontSize: 20,
-        color: 'black',
-        ...Platform.select({
-            ios: {
-                fontFamily: 'Kohinoor Telugu',
-            },
-            android: {
-                fontFamily: 'Roboto',
-            }
-        })
-    },
-    h3: {
-        fontSize: 14,
-        color: 'black',
-        ...Platform.select({
-            ios: {
-                fontFamily: 'Kohinoor Telugu',
-            },
-            android: {
-                fontFamily: 'Roboto',
-            }
-        })
-    }
-})

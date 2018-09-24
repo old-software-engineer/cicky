@@ -5,6 +5,11 @@ import logo from '../static/images/retro.png';
 // import { Audio } from "expo";
 import _ from 'lodash';
 import { ListItem, Text } from "react-native-elements";
+import io from 'socket.io-client';
+
+const socket = io('http://localhost:8000', {
+    transports: ['websocket'],
+})
 
 var clicks = 0;
 var target;
@@ -55,6 +60,8 @@ export default class Board extends React.PureComponent {
 
         //Throtteling click events
         this.throttledClick = _.throttle(this.clickyClick, 1500);
+
+        socket.on('RETURN_TARGET', this.lightTheFire)
 
         //Asking for target button(EVENT) and starting game(ACTION)
         this.props.navigation.state.params.socket.on('START_GAME', this.startGame)
@@ -241,7 +248,7 @@ export default class Board extends React.PureComponent {
     //Reseeting button
     btcReset = function (idRecieved, nameRecieved) {
         target = idRecieved
-        if(first){
+        if (first) {
             first = false
             this.props.navigation.state.params.socket.emit('START');
         }
@@ -426,23 +433,22 @@ export default class Board extends React.PureComponent {
 
     //To do on button click
     clickyClick = async function (idRecieved) {
-        
+
         // const soundObject = new Expo.Audio.Sound();
         // try {
-        
+
         //     await soundObject.loadAsync(require('./res/click.mp3'));
         //     await soundObject.playAsync();
         //     // Your sound is playing!
         // } catch (error) {
-        
+
         //     // An error occurred!
         // }
         if (gameOn) {
             if (idRecieved == target) {
                 this.props.navigation.state.params.socket.emit('COLLECTION', idRecieved);
             }
-            else
-            {
+            else {
                 this.btcReset(idRecieved, name)
             }
         }
